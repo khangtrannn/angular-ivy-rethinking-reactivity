@@ -1,26 +1,25 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Subject, scan, startWith, tap } from 'rxjs';
-import { createRenderScheduler } from './core/render-scheduler';
+import { Subject, scan, startWith } from 'rxjs';
+import { ReactivityComponent } from './core/reactivity.component';
 
 @Component({
   selector: 'app-counter',
   template: `
     <button (click)="value$.next(-1)">-</button>
-    <h1>{{ count$ | async }}</h1>
+    <h1>{{ state.count }}</h1>
     <button (click)="value$.next(1)">+</button>
   `,
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
+  imports: [],
 })
-export class CounterComponent {
-  private readonly renderScheduler = createRenderScheduler();
-
+export class CounterComponent extends ReactivityComponent {
   value$ = new Subject<number>();
-  count$ = this.value$.pipe(
-    startWith(0),
-    scan((count, next) => count + next),
-    tap(() => this.renderScheduler.schedule())
-  );
+
+  state = this.connect({
+    count: this.value$.pipe(
+      startWith(0),
+      scan((count, next) => count + next)
+    ),
+  });
 }

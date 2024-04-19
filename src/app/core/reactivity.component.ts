@@ -15,14 +15,17 @@ export abstract class ReactivityComponent {
     const updateSink$ = from(sourceKeys).pipe(
       mergeMap((sourceKey) =>
         sources[sourceKey].pipe(
-          tap((sinkValue: any) => (sink[sourceKey] = sinkValue))
+          tap((sinkValue: any) => {
+            if (sink[sourceKey] !== sinkValue) {
+              sink[sourceKey] = sinkValue;
+              this.renderScheduler.schedule();
+            }
+          })
         )
       )
     );
 
-    updateSink$
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => this.renderScheduler.schedule());
+    updateSink$.pipe(takeUntilDestroyed()).subscribe();
 
     return sink;
   }
