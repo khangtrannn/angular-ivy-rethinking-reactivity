@@ -1,7 +1,4 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Subject, scan, startWith, tap } from 'rxjs';
-import { TickScheduler } from './core/tick-scheduler';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CounterComponent } from './counter.component';
 
 @Component({

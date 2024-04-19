@@ -1,6 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { TickScheduler } from './core/tick-scheduler';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Subject, scan, startWith, tap } from 'rxjs';
 import { createRenderScheduler } from './core/render-scheduler';
 
